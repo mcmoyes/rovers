@@ -48,6 +48,7 @@ export default {
       this.activeRoverNum = roverNum;
     },
     updateRover: function(props) {
+      // because of the UI, we're only ever updating the active rover.
       let landingRover = this.rovers[this.activeRoverNum];
 
       // update rover with new values from props.
@@ -57,6 +58,16 @@ export default {
         if (props.hasOwnProperty(prop)) {
           Vue.set(landingRover, prop, props[prop]);
         }
+      }
+    },
+    checkOutOfBounds: function() {
+      if (mapNav.isOutOfBounds(this.activeRover)) {
+        this.updateRover({ isDisabled: true });
+      }
+    },
+    checkCollision: function() {
+      if (mapNav.hasCollided(this.activeRover, this.craters)) {
+        this.updateRover({ isDisabled: true });
       }
     }
   },
@@ -92,9 +103,8 @@ export default {
       let newPos = mapNav.getPositionFromSequence(newVal, startPos);
       this.updateRover(newPos);
 
-      if (mapNav.isOutOfBounds(this.activeRover.x, this.activeRover.y)) {
-        this.updateRover({ isDisabled: true });
-      }
+      this.checkOutOfBounds();
+      this.checkCollision();
     },
     activeRoverNum: function(newVal) {
       this.rovers.forEach((rover, index) => {
@@ -109,9 +119,8 @@ export default {
       // check out of bounds on landing.
       if (newVal === true && oldVal === false) {
         // has just landed.
-        if (mapNav.isOutOfBounds(this.activeRover.x, this.activeRover.y)) {
-          this.updateRover({ isDisabled: true });
-        }
+        this.checkOutOfBounds();
+        this.checkCollision();
       }
     }
   }

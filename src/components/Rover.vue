@@ -1,5 +1,8 @@
 <template>
-  <div class="icon" :class="roverClasses" :style="orientationStyle">A</div>
+  <div class="icon" :class="roverClasses" :style="orientationStyle">
+    <span v-if="!rover.isDisabled">A</span>
+    <span v-else class="error">X</span>
+  </div>
 </template>
 
 <script>
@@ -69,12 +72,13 @@ export default {
 @import "../styles/_variables.scss";
 .icon {
   transition: transform 0.3s ease;
+  color: $rover-colour;
 }
 .active {
-  color: $monochrome-active;
+  color: $rover-colour-active;
 }
 .disabled {
-  color: $monochrome-error;
+  color: $rover-colour-disabled;
 }
 // .orientation-N {
 //   transform: rotate(0deg);

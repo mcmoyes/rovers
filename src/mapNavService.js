@@ -3,14 +3,38 @@ let mapNavService = (mapWidth, mapHeight) => {
   const height = mapHeight;
   const orientations = ["N", "E", "S", "W"];
 
-  let isOutOfBounds = (x, y) => {
+  let isOutOfBounds = ({ x, y }) => {
     if (x < 0 || y < 0 || x > width - 1 || y > height - 1) {
       return true;
     }
     return false;
   };
 
-  let moveForwards = ({ x, y, orientation }) => {
+  let hasCollided = ({ x, y }, collidableObjArray) => {
+    return (
+      collidableObjArray.find(
+        collidableObj => collidableObj.x === x && collidableObj.y === y
+      ) != null
+    );
+  };
+
+  let getPositionFromSequence = (sequence, start) => {
+    let newPosition = { ...start };
+
+    for (var i = 0; i < sequence.length; i++) {
+      if (sequence[i] == "M") {
+        // process Move
+        newPosition = _moveForwards(newPosition);
+      }
+      if (sequence[i] == "L" || sequence[i] == "R") {
+        // rotate
+        newPosition.orientation = _rotate(sequence[i], newPosition.orientation);
+      }
+    }
+    return newPosition;
+  };
+
+  let _moveForwards = ({ x, y, orientation }) => {
     let newPos = { x, y, orientation };
     switch (orientation) {
       case "N":
@@ -29,29 +53,8 @@ let mapNavService = (mapWidth, mapHeight) => {
     return newPos;
   };
 
-  let getPositionFromSequence = (sequence, start) => {
-    let newPosition = { ...start };
-
-    for (var i = 0; i < sequence.length; i++) {
-      if (sequence[i] == "M") {
-        // process Move
-        newPosition = moveForwards(newPosition);
-      }
-      if (sequence[i] == "L" || sequence[i] == "R") {
-        // rotate
-        newPosition.orientation = rotate(
-          sequence[i],
-          newPosition.orientation
-        );
-      }
-    }
-    return newPosition;
-  };
-
-  let rotate = (direction, currentOrientation) => {
-    let currentOrientationIndex = orientations.indexOf(
-      currentOrientation
-    );
+  let _rotate = (direction, currentOrientation) => {
+    let currentOrientationIndex = orientations.indexOf(currentOrientation);
     let mod = direction === "L" ? -1 : 1;
     let newIndex = currentOrientationIndex + mod;
     if (newIndex < 0) {
@@ -62,10 +65,11 @@ let mapNavService = (mapWidth, mapHeight) => {
 
     return orientations[newIndex];
   };
+
   return {
     isOutOfBounds: isOutOfBounds,
+    hasCollided: hasCollided,
     getPositionFromSequence: getPositionFromSequence
-    // rotate: rotate
   };
 };
 

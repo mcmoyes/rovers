@@ -1,8 +1,8 @@
 <template>
   <div class="tile" :style="{ width: width + '%'}">
     <div class="inner">
-      <Rover v-if="hasRover" :rover="rover"></Rover>
       <div class="crater" v-if="hasCrater">O</div>
+      <Rover v-if="hasRover" :rover="rover"></Rover>
     </div>
   </div>
 </template>
@@ -56,5 +56,9 @@ export default {
       left: 0;
     }
   }
+}
+
+.crater {
+  color: $obstacle-colour;
 }
 </style>
