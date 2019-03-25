@@ -46,7 +46,6 @@ export default {
 @import "../styles/_variables.scss";
 .tile {
   border: 1px solid $monochrome-dark;
-  min-width: 12px;
   .inner {
     position: relative;
     padding-top: 100%;
@@ -55,6 +54,9 @@ export default {
       top: 0;
       left: 0;
     }
+  }
+  @media (max-width: 767px) {
+    font-size: 9px;
   }
 }
 

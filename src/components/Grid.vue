@@ -1,5 +1,5 @@
 <template>
-  <div class="grid">
+  <div class="grid" style="{ 'min-width': (12 * width) + 'px' }">
     <Tile
       v-for="tile in gridTiles"
       :key="tile.id"
@@ -51,5 +51,8 @@ export default {
   border: 1px solid $monochrome-dark;
   display: flex;
   flex-wrap: wrap-reverse;
+  .tile {
+    min-width: 10px;
+  }
 }
 </style>
