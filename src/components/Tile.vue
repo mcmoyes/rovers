@@ -2,6 +2,7 @@
   <div class="tile" :style="{ width: width + '%'}">
     <div class="inner">
       <Rover v-if="hasRover" :rover="rover"></Rover>
+      <div class="crater" v-if="hasCrater">O</div>
     </div>
   </div>
 </template>
@@ -18,7 +19,8 @@ export default {
     width: Number,
     x: Number,
     y: Number,
-    rovers: Array
+    rovers: Array,
+    craters: Array
   },
   computed: {
     rover: function() {
@@ -28,6 +30,13 @@ export default {
     },
     hasRover: function() {
       return this.rover != null;
+    },
+    hasCrater: function() {
+      return (
+        this.craters.find(
+          crater => crater.x === this.x && crater.y === this.y
+        ) != null
+      );
     }
   }
 };

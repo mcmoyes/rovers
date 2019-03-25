@@ -2,7 +2,7 @@
   <div id="app" class="container">
     <div class="row">
       <div class="col-md-8">
-        <Grid :width="gridWidth" :height="gridHeight" :rovers="rovers"></Grid>
+        <Grid :width="gridWidth" :height="gridHeight" :rovers="rovers" :craters="craters"></Grid>
       </div>
       <div class="col-md-4">
         <RoversUI

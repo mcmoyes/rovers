@@ -7,6 +7,7 @@
       :x="tile.x"
       :y="tile.y"
       :rovers="rovers"
+      :craters="craters"
     ></Tile>
   </div>
 </template>
@@ -21,6 +22,7 @@ export default {
   },
   props: {
     rovers: Array,
+    craters: Array,
     width: Number,
     height: Number
   },
