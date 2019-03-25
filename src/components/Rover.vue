@@ -22,23 +22,44 @@ export default {
         active: this.rover.isActive,
         disabled: this.rover.isDisabled
       };
-      classes["orientation-" + this.rover.orientation] = true;
+      // see note under the orientation watcher.
+      // classes["orientation-" + this.rover.orientation] = true;
       return classes;
     }
   },
   watch: {
     orientation: function(newVal, oldVal) {
-      if (newVal == "N" && oldVal == "W") {
-        this.orientationStyle = { transform: "rotate(360deg)" };
-        setTimeout(function() {
-          this.orientationStyle = {
-            transform: "rotate(0deg)",
-            transition: "none"
-          };
-        }, 400);
-      } else {
-        this.orientationStyle = {};
+      // because a css rotation from 270deg to 0deg
+      // will rotate counterclockwise, we can't just
+      // just set the rotation from the current orientation
+      // via classes (left commented in, below). The rotation
+      // has to be cumulative (360deg if we're coming from 270deg, etc)
+      let deg = 0;
+      switch (this.rover.startOrientation) {
+        case "N":
+          deg = 0;
+          break;
+        case "E":
+          deg = 90;
+          break;
+        case "S":
+          neg = 180;
+          break;
+        case "W":
+          deg = 270;
+          break;
       }
+      for (let i = 0; i < this.rover.sequence.length; i++) {
+        if (this.rover.sequence[i] == "L") {
+          deg -= 90;
+        }
+        if (this.rover.sequence[i] == "R") {
+          deg += 90;
+        }
+      }
+      this.orientationStyle = {
+        transform: "rotate(" + deg + "deg)"
+      };
     }
   }
 };
@@ -55,16 +76,16 @@ export default {
 .disabled {
   color: $monochrome-error;
 }
-.orientation-N {
-  transform: rotate(0deg);
-}
-.orientation-E {
-  transform: rotate(90deg);
-}
-.orientation-S {
-  transform: rotate(180deg);
-}
-.orientation-W {
-  transform: rotate(270deg);
-}
+// .orientation-N {
+//   transform: rotate(0deg);
+// }
+// .orientation-E {
+//   transform: rotate(90deg);
+// }
+// .orientation-S {
+//   transform: rotate(180deg);
+// }
+// .orientation-W {
+//   transform: rotate(270deg);
+// }
 </style>
