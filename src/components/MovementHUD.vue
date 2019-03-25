@@ -80,4 +80,7 @@ label {
 .sequence-input {
   width: 100%;
 }
+button {
+  margin-right: 20px;
+}
 </style>

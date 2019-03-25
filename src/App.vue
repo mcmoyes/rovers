@@ -41,6 +41,7 @@ export default {
       this.rovers.push({
         ...roverConfig
       });
+      this.rovers[0].isActive = true;
     }
   },
   methods: {
@@ -155,7 +156,8 @@ label {
   margin: 5px 0;
 }
 input,
-button {
+button,
+textarea {
   background: $background;
   border: 1px solid $monochrome-dark;
   color: $monochrome;
